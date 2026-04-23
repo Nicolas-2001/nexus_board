@@ -30,7 +30,7 @@ function getLocalIpAddress() {
  * @param {Error|null} [error=null] - Error to include in the response
  */
 function sendResponse(res, statusCode, message, data = null, error = null) {
-	if (ENVIRONMENT.DEBUG == "true") {
+	if (ENVIRONMENT.DEBUG) {
 		res.status(statusCode).json({
 			status: statusCode,
 			message: message,

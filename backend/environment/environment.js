@@ -35,7 +35,7 @@ const ENVIRONMENT = {
 	DB_CONNECTION_LIMIT: process.env.DB_CONNECTION_LIMIT || 10,
 	DB_WAITING_FOR_CONNECTIONS: true, // Always set to true to ensure the server waits for connections when the pool is full
 	DB_QUEUE_LIMIT: process.env.DB_QUEUE_LIMIT || 0,
-	DEBUG: process.env.DEBUG == "true",
+	DEBUG: process.env.DEBUG,
 	API_PORT: process.env.API_PORT,
 	NODE_ENV: process.env.NODE_ENV,
 };
