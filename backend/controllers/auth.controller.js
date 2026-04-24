@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
-import { sendResponse, handleError, validateFields, validateFormat, hashPassword, comparePassword } from "../utils/helper.js";
+import { sendResponse, handleError, hashPassword, comparePassword } from "../utils/helper.js";
 import { createUser, getUserByEmail } from "../repositories/user.repository.js";
 import ENVIRONMENT from "../environment/environment.js";
-import { NotFoundError } from "../utils/error.js";
+import { validateUserData, validateLoginData } from "../utils/validate.js";
 
 async function registerUser(req, res) {
 	const { name, email, password } = req.body;
@@ -25,17 +25,13 @@ async function registerUser(req, res) {
 
 async function loginUser(req, res) {
 	const { email, password } = req.body;
-	const validation = validateLogin({ email });
+	const validation = validateLoginData({ email, password });
 	if (!validation.valid) {
 		return sendResponse(res, 400, validation.message);
 	}
 	try {
 		const user = await getUserByEmail(email);
-		if (!user) {
-			throw new NotFoundError("User not found");
-		}
-		const isPasswordValid = await comparePassword(password, user.password);
-		if (!isPasswordValid) {
+		if (!user || !(await comparePassword(password, user.password))) {
 			return sendResponse(res, 401, "Invalid credentials");
 		}
 		const token = jwt.sign({ id: user.id, email: user.email }, ENVIRONMENT.JWT_SECRET, {
@@ -46,28 +42,6 @@ async function loginUser(req, res) {
 	} catch (error) {
 		return handleError(res, error);
 	}
-}
-
-function validateUserData(data) {
-	const validation = validateFields(["name", "email", "password"], data);
-	if (!validation.valid) {
-		return validation;
-	}
-	return validateFormat({
-		name: { value: data.name, type: "letters" },
-		email: { value: data.email, type: "email" },
-		password: { value: data.password, type: "password" },
-	});
-}
-
-function validateLogin(fields) {
-	const validation = validateFields(["email"], fields);
-	if (!validation.valid) {
-		return validation;
-	}
-	return validateFormat({
-		email: { value: fields.email, type: "email" },
-	});
 }
 
 export { registerUser, loginUser };
