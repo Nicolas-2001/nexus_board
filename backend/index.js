@@ -16,7 +16,6 @@ async function startServer() {
 	app.listen(PORT, () => {
 		if (ENVIRONMENT.DEBUG) {
 			console.log(`Server running at http://${getLocalIpAddress()}:${PORT}/ in ${ENVIRONMENT.NODE_ENV} mode`);
-			console.log(`Server is running in ${ENVIRONMENT.NODE_ENV} mode`);
 			console.log(`Date started: ${new Date().toLocaleString()}`);
 			console.log("Press CTRL-C to stop");
 		}
