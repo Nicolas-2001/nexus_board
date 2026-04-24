@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const required = ["DB_USER", "DB_PASSWORD", "DB_HOST", "DB_PORT", "DB_NAME", "NODE_ENV"];
+const required = ["DB_USER", "DB_PASSWORD", "DB_HOST", "DB_PORT", "DB_NAME", "NODE_ENV", "JWT_SECRET"];
 
 const missing = required.filter((key) => !process.env[key]);
 
@@ -25,6 +25,8 @@ if (missing.length > 0) {
  * @property {boolean} DEBUG             - Enables verbose logging and detailed error responses
  * @property {string} API_PORT           - HTTP server port
  * @property {string} NODE_ENV           - Runtime environment (development | production)
+ * @property {string} JWT_SECRET         - Secret key for JWT authentication
+ * @property {string} JWT_EXPIRES_IN     - JWT expiration time (default 1h)
  */
 const ENVIRONMENT = {
 	DB_USER: process.env.DB_USER,
@@ -38,6 +40,8 @@ const ENVIRONMENT = {
 	DEBUG: process.env.DEBUG,
 	API_PORT: process.env.API_PORT,
 	NODE_ENV: process.env.NODE_ENV,
+	JWT_SECRET: process.env.JWT_SECRET,
+	JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || "1h",
 };
 
 export default ENVIRONMENT;
