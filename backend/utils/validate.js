@@ -17,7 +17,7 @@ function validateLoginData(data) {
 }
 
 function validateUserData(data) {
-	return validate(data, { name: "letters", email: "email", password: "password" });
+	return validate(data, { name: null, email: "email", password: "password" });
 }
 
 function validateUserStatus(data) {
@@ -31,7 +31,7 @@ function validateUserStatus(data) {
 }
 
 function validateUserPatch(data) {
-	const schema = { name: "letters", email: "email", password: "password" };
+	const schema = { name: null, email: "email", password: "password" };
 	const provided = Object.fromEntries(
 		Object.entries(schema).filter(([key]) => data[key] !== undefined)
 	);
