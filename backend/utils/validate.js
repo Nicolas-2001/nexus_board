@@ -59,4 +59,17 @@ function validateBoardPatch(data) {
 	return { valid: true };
 }
 
-export { validateLoginData, validateUserData, validateUserPatch, validateUserStatus, validateBoardData, validateBoardPatch };
+function validateTaskData(data) {
+	return validate(data, { title: null, board_id: null, status_id: null });
+}
+
+function validateTaskPatch(data) {
+	const allowed = ["title", "description", "assigned_id", "status_id"];
+	const provided = allowed.filter((key) => data[key] !== undefined);
+	if (provided.length === 0) {
+		return { valid: false, message: "At least one field must be provided: title, description, assigned_id, status_id" };
+	}
+	return { valid: true };
+}
+
+export { validateLoginData, validateUserData, validateUserPatch, validateUserStatus, validateBoardData, validateBoardPatch, validateTaskData, validateTaskPatch };
